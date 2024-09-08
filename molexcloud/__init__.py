@@ -1,1 +1,1 @@
-from molexcloud.mongo import Mongo
+from mongo import Mongo

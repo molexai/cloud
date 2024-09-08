@@ -1,2 +1,2 @@
-from molexcloud.ai.autonomous import Autonomous
-from molexcloud.ai.limiter import Limiter
+from autonomous import Autonomous
+from limiter import Limiter
