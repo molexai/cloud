@@ -1,5 +1,5 @@
 from time import sleep, time
-from ai.autonomous import Autonomous
+from autonomous import Autonomous
 
 start_time = time()  # Record the start time
 

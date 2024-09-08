@@ -2,10 +2,10 @@ import os
 
 from dotenv import load_dotenv
 
-from molexcloud.mongo import Mongo
-from molexcloud.ai.limiter import Limiter
+from mongo import Mongo
+from limiter import Limiter
 
-load_dotenv("../.env")
+load_dotenv(".env")
 
 class Autonomous:
 
@@ -29,7 +29,7 @@ class Autonomous:
     @staticmethod
     def request(model, request):
         """Requests AI content"""
-        os.chdir("../..")
+        os.chdir("..")
         response = os.system(f'mlxai.exe "{model}" "{os.getenv("GEMINI_KEY")}" "{request}"')
         os.chdir("molexcloud/ai")
         return str(response).replace("0", "").replace("\n", "").strip()
