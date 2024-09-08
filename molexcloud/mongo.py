@@ -20,7 +20,7 @@ class Mongo:
     _client = pymongo.MongoClient(os.getenv("CLIENT"))
     _db = _client.MolexAI
     _coll = _db.workspace  # the collection is workspace by default
-    _collections = ["cloud"]
+    _collections = ["molexcloud"]
 
     @classmethod
     def insert(cls, coll=None, *, data=None):

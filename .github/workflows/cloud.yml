@@ -22,5 +22,5 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Run cloud script
-      run: python cloud/main.py
+    - name: Run molexcloud script
+      run: python molexcloud/main.py

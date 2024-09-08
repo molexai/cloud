@@ -2,8 +2,8 @@ import os
 
 from dotenv import load_dotenv
 
-from cloud.mongo import Mongo
-from cloud.ai.limiter import Limiter
+from molexcloud.mongo import Mongo
+from molexcloud.ai.limiter import Limiter
 
 load_dotenv("../.env")
 
@@ -12,7 +12,7 @@ class Autonomous:
     @staticmethod
     def check():
         """Checks for AI requests"""
-        data = Mongo.find(coll="cloud", data={"ai": "request"})
+        data = Mongo.find(coll="molexcloud", data={"ai": "request"})
         if data:
             model = data["model"]
             request = data["request"]
@@ -23,7 +23,7 @@ class Autonomous:
                 assert not limit, "User has reached the limit"
                 Limiter.limit_increment(user_id)
                 response = Autonomous.request(model, request)
-                Mongo.insert(coll="cloud", data={"ai": "response", "id": user_id, "response": response, "received": "false"})
+                Mongo.insert(coll="molexcloud", data={"ai": "response", "id": user_id, "response": response, "received": "false"})
 
 
     @staticmethod
@@ -31,16 +31,16 @@ class Autonomous:
         """Requests AI content"""
         os.chdir("../..")
         response = os.system(f'mlxai.exe "{model}" "{os.getenv("GEMINI_KEY")}" "{request}"')
-        os.chdir("cloud/ai")
+        os.chdir("molexcloud/ai")
         return str(response).replace("0", "").replace("\n", "").strip()
 
     @staticmethod
     def received():
         """Removes received AI responses"""
-        data = Mongo.find(coll="cloud", data={"ai": "response", "received": "true"})
+        data = Mongo.find(coll="molexcloud", data={"ai": "response", "received": "true"})
         if data:
             user_id = data["id"]
             response = data["response"]
             print(f"User {user_id} received response: {response}")
-            Mongo.delete(coll="cloud", data={"ai": "response", "received": "true"})
-            Mongo.delete(coll="cloud", data={"ai": "request", "id": user_id})
+            Mongo.delete(coll="molexcloud", data={"ai": "response", "received": "true"})
+            Mongo.delete(coll="molexcloud", data={"ai": "request", "id": user_id})
