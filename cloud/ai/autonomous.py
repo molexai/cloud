@@ -1,7 +1,6 @@
 import os
 
 from dotenv import load_dotenv
-from transformers.models.mpnet.modeling_mpnet import MPNetIntermediate
 
 from cloud.mongo import Mongo
 from cloud.ai.limiter import Limiter
