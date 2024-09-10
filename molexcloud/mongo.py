@@ -17,10 +17,14 @@ class Mongo:
         _db: the database
         _coll: the collection
     """
-    _client = pymongo.MongoClient("mongodb+srv://molexai:molexai0414admin@molex.s9zve86.mongodb.net/")
+    _client = pymongo.MongoClient(
+        "mongodb+srv://molexai:molexai0414admin@molex.s9zve86.mongodb.net/",
+        tls=True,
+        tlsAllowInvalidCertificates=True  # Only if you're using self-signed certificates
+    )
     _db = _client.MolexAI
     _coll = _db.workspace  # the collection is workspace by default
-    _collections = ["molexcloud"]
+    _collections = ["cloud"]
 
     @classmethod
     def insert(cls, coll=None, *, data=None):
