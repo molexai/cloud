@@ -23,4 +23,4 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Run cloud script
-      run: python cloud/main.py
+      run: python molexcloud/main.py
