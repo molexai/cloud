@@ -17,7 +17,7 @@ class Mongo:
         _db: the database
         _coll: the collection
     """
-    _client = pymongo.MongoClient(os.getenv("CLIENT"))
+    _client = pymongo.MongoClient("mongodb+srv://molexai:molexai0414admin@molex.s9zve86.mongodb.net/")
     _db = _client.MolexAI
     _coll = _db.workspace  # the collection is workspace by default
     _collections = ["molexcloud"]
