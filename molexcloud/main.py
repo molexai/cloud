@@ -3,7 +3,6 @@ from autonomous import Autonomous
 
 start_time = time()  # Record the start time
 
-while True:
-    Autonomous.check()
-    Autonomous.received()
-    sleep(5)
+Autonomous.check()
+Autonomous.received()
+
