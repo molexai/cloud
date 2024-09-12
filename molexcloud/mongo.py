@@ -18,7 +18,7 @@ class Mongo:
         _coll: the collection
     """
     _client = pymongo.MongoClient(
-        "mongodb+srv://michaaelexe:Stown0414@cluster0.kj7dphx.mongodb.net/",
+        os.getenv("CLIENT"),
         tls=True,
         tlsAllowInvalidCertificates=True  # Only if you're using self-signed certificates
     )

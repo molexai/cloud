@@ -14,9 +14,15 @@ class Autonomous:
         """Checks for AI requests"""
         data = Mongo.find(coll="cloud", data={"ai": "request"})
         if data:
-            model = data["model"]
-            request = data["request"]
-            user_id = data["id"]
+            model = data.get("model", None)
+            request = data.get("request", None)
+            user_id = data.get("id", None)
+            answered = data.get("answered", "false")
+
+            if answered == "true":
+                return
+
+            Mongo.update(coll="cloud", parent_dict={"ai": "request", "id": user_id}, update={"$set": {"answered": "true"}})
 
             if model.startswith("gemini"):
                 limit = Limiter.limit_check(user_id)
@@ -29,9 +35,7 @@ class Autonomous:
     @staticmethod
     def request(model, request):
         """Requests AI content"""
-        os.chdir("..")
-        response = os.system(f'mlxai.exe "{model}" "{os.getenv("GEMINI_KEY")}" "{request}"')
-        os.chdir("cloud/ai")
+        response = os.system(f'{os.path.abspath("mlxai.exe")} "{model}" "{os.getenv("GEMINI_KEY")}" "{request}"')
         return str(response).replace("0", "").replace("\n", "").strip()
 
     @staticmethod
