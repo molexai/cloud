@@ -2,11 +2,8 @@ import pymongo
 from dotenv import load_dotenv
 import os
 
-# TODO: Make sure the env file is in the correct directory
+# Load environment variables
 load_dotenv()
-
-
-# Disclaimer: Remember to add the collections you want to use in the _collections list
 
 class Mongo:
     """
@@ -41,14 +38,17 @@ class Mongo:
     @classmethod
     def update(cls, coll=None, *, parent_dict=None, update=None):
         """
-        Updates data into the database
+        Updates data in the database
 
         Args:
-            coll (str): the collection to update the data into
-            parent_dict (dict): the parent dictionary
-            update (dict): the update data
+            coll (str): the collection to update the data in
+            parent_dict (dict): the parent dictionary for finding the document
+            update (dict): the update data, which should be passed as a dict with fields to update
         """
         cls._coll = cls._db[coll] if coll in cls._collections else cls._coll
+        # Wrap the update dictionary in $set if it doesn't already contain MongoDB operators
+        if not any(key.startswith("$") for key in update.keys()):
+            update = {"$set": update}
         cls._coll.update_one(parent_dict, update)
 
     @classmethod
@@ -67,7 +67,7 @@ class Mongo:
     @classmethod
     def find(cls, coll=None, *, item=None, data=None) -> dict:
         """
-        Finds data in the database
+        Finds a single document in the database
 
         Args:
             coll (str): the collection to find the data in
@@ -81,6 +81,22 @@ class Mongo:
             print(f"No document found with data: {find_data}")
             return {}
         return result if item is None else result.get(item, None)
+
+    @classmethod
+    def find_all(cls, coll=None, *, data=None) -> list[dict]:
+        """
+        Finds all documents matching the criteria in the database
+
+        Args:
+            coll (str): the collection to find the data in
+            data (dict): the data to match documents (default: None)
+        Returns:
+            list of matching documents
+        """
+        cls._coll = cls._db[coll] if coll in cls._collections else cls._coll
+        find_data = data if data is not None else {}
+        cursor = cls._coll.find(find_data)
+        return list(cursor)
 
     def add(self, coll):
         """
