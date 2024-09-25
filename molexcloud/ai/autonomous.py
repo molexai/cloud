@@ -62,7 +62,7 @@ class Autonomous:
     def request_ai(model, request):
         try:
             process = subprocess.Popen(
-                ["C:/Users/User/IdeaProjects/molexCloud/mlxai.exe", model, os.getenv("GEMINI_KEY"), request],
+                [os.path.abspath("mlxai.exe"), model, os.getenv("GEMINI_KEY"), request],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
             )
