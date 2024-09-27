@@ -61,17 +61,19 @@ class Autonomous:
     @staticmethod
     def request_ai(model, request):
         try:
+            subprocess.run(["cd", os.path.abspath("ai")], shell=True)
             process = subprocess.Popen(
-                [os.path.abspath("mlxai.exe"), model, os.getenv("GEMINI_KEY"), request],
+                ["mlxai.exe", model, os.getenv("GEMINI_KEY"), request],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
             )
             output, error_output = process.communicate()
+            output = output.decode().strip()
 
             if error_output:
                 print(f"Error Output: {error_output.decode().strip()}")
 
-            return output.decode().strip()
+            return output
         except Exception as e:
             print(e)
             return ""
@@ -109,3 +111,6 @@ class Autonomous:
             user_id = request.get("id")
             if not Limiter.limit_check(user_id):
                 Mongo.delete(coll=collection, data={"id": user_id, "request": request.get("request")})
+
+e = Autonomous.request_ai("gemini-1.5-flash", "what is dark matter?")
+print(e)
