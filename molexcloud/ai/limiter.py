@@ -26,6 +26,11 @@ class Limiter:
                     parent_dict={"message_id": message_id},
                     update={"last_request_time": current_time}
                 )
+                Mongo.update(
+                    coll="cloud",
+                    parent_dict={"message_id": message_id},
+                    update={"count": 0}
+                )
 
             return count >= limit or count >= per_minute
         return False

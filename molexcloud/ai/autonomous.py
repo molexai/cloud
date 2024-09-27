@@ -2,6 +2,8 @@ import os
 import subprocess
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
+import shutil
+import requests
 
 from molexcloud.ai.limiter import Limiter
 from molexcloud.mongo import Mongo
@@ -61,19 +63,31 @@ class Autonomous:
     @staticmethod
     def request_ai(model, request):
         try:
-            subprocess.run(["cd", os.path.abspath("ai")], shell=True)
+            # Define the URL for mlxai.exe
+            mlxai_url = "https://github.com/molexai/cloud/raw/main/molexcloud/ai/mlxai.exe"
+            local_path = os.path.abspath("mlxai.exe")
+
+            # Download mlxai.exe
+            response = requests.get(mlxai_url, stream=True)
+            if response.status_code == 200:
+                with open(local_path, 'wb') as out_file:
+                    shutil.copyfileobj(response.raw, out_file)
+            else:
+                print(f"Failed to download mlxai.exe: {response.status_code}")
+                return ""
+
+            # Run mlxai.exe
             process = subprocess.Popen(
-                ["mlxai.exe", model, os.getenv("GEMINI_KEY"), request],
+                [local_path, model, os.getenv("GEMINI_KEY"), request],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
             )
             output, error_output = process.communicate()
-            output = output.decode().strip()
 
             if error_output:
                 print(f"Error Output: {error_output.decode().strip()}")
 
-            return output
+            return output.decode().strip()
         except Exception as e:
             print(e)
             return ""
@@ -111,6 +125,3 @@ class Autonomous:
             user_id = request.get("id")
             if not Limiter.limit_check(user_id):
                 Mongo.delete(coll=collection, data={"id": user_id, "request": request.get("request")})
-
-e = Autonomous.request_ai("gemini-1.5-flash", "what is dark matter?")
-print(e)

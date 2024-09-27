@@ -12,8 +12,8 @@ start_time = time()  # Record the start time
 while True:
     # Check for AI requests
     Autonomous.check()
-    if time() - start_time >= 60:  # Check for received responses every minute
-        os.system("cls")  # Clear the console
+    if time() - start_time >= 300:  # Check for received responses every minute
+        os.system("cls" if os.name == "nt" else "clear")
         print("molexAI Cloud: Checking for received responses...\n")
         Autonomous.received()  # Check for received responses every minute
         start_time = time()
