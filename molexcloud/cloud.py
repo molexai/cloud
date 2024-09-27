@@ -1,6 +1,8 @@
 import shutil
 import sys
 import os
+import signal
+import logging
 from time import sleep, time
 
 import requests
@@ -23,9 +25,6 @@ if not os.path.exists("mlxai.exe"):
             shutil.copyfileobj(response.raw, out_file)
     else:
         print(f"Failed to download mlxai.exe: {response.status_code}")
-
-import signal
-import logging
 
 class Cloud:
     @staticmethod
