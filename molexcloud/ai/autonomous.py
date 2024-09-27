@@ -63,18 +63,7 @@ class Autonomous:
     @staticmethod
     def request_ai(model, request):
         try:
-            # Define the URL for mlxai.exe
-            mlxai_url = "https://github.com/molexai/cloud/raw/main/molexcloud/ai/mlxai.exe"
             local_path = os.path.abspath("mlxai.exe")
-
-            # Download mlxai.exe
-            response = requests.get(mlxai_url, stream=True)
-            if response.status_code == 200:
-                with open(local_path, 'wb') as out_file:
-                    shutil.copyfileobj(response.raw, out_file)
-            else:
-                print(f"Failed to download mlxai.exe: {response.status_code}")
-                return ""
 
             # Run mlxai.exe
             process = subprocess.Popen(
