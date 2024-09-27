@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="mlx-cloud",
+    name="mlxcloud",
     version="0.1.0",
     description="molexCloud, autonomous cloud manager",
     long_description=open('README.md').read(),
