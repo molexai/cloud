@@ -55,7 +55,7 @@ class Cloud:
                 Autonomous.check()
                 if time() - start_time >= 300:
                     os.system("cls" if os.name == "nt" else "clear")
-                    logging.info("molexAI Cloud: Checking for received responses...\n")
+                    logging.info("Checking for received responses...\n")
                     Autonomous.received()
                     start_time = time()
                 sleep(0.5)
