@@ -3,9 +3,9 @@
 </p>
 
 <p align="center">
-<a href="https://github.com/molexai/mlxai" target="_blank">
+<a href="https://github.com/molexai/cloud" target="_blank">
     <img src="https://img.shields.io/github/last-commit/molexai/cloud" alt="Last Commit">
 </a>
 
 > [!NOTE]
-molexCloud, available at [https://github.com/molexai/molexSDK](https://github.com/molexai/cloud), is licensed by molexAI Inc. under the [molexAI Source Available License (MSAL)](https://github.com/molexai/legal/blob/main/licenses/MSAL.md). Your access to and use of content in this repository is governed by the terms of the MSAL. If you don't agree to the terms of the MSAL, you are not permitted to access or use content available in this repository.
+molexCloud, available at [https://github.com/molexai/cloud](https://github.com/molexai/cloud), is licensed by molexAI Inc. under the [molexAI Source Available License (MSAL)](https://github.com/molexai/legal/blob/main/licenses/MSAL.md). Your access to and use of content in this repository is governed by the terms of the MSAL. If you don't agree to the terms of the MSAL, you are not permitted to access or use content available in this repository.
