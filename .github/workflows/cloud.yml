@@ -16,11 +16,14 @@ jobs:
         ports:
           - 27017:27017
         options: > 
-          --config /etc/mongo/mongod.conf
+          -v /etc/mongo/mongod.conf:/etc/mongo/mongod.conf
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+
+    - name: Copy MongoDB config
+      run: sudo cp config/mongod.conf /etc/mongo/mongod.conf
 
     - name: Set up Python
       uses: actions/setup-python@v2
