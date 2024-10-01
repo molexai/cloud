@@ -10,20 +10,9 @@ jobs:
   run-cloud:
     runs-on: ubuntu-latest
 
-    services:
-      mongo:
-        image: mongo:latest
-        ports:
-          - 27017:27017
-        options: > 
-          -v /etc/mongo/mongod.conf:/etc/mongo/mongod.conf
-
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Copy MongoDB config
-      run: sudo cp config/mongod.conf /etc/mongo/mongod.conf
 
     - name: Set up Python
       uses: actions/setup-python@v2
