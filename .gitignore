@@ -1,5 +1,5 @@
 .idea
-molexcloud/.env
+.venv
 molexcloud/_pycache_
 build
 mlxcloud.egg-info
