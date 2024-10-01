@@ -34,31 +34,30 @@ class Autonomous:
                 )
                 continue
 
-            if model.startswith("gemini"):
-                if Limiter.limit_check(user_id):
-                    Mongo.update(
-                        coll=collection,
-                        parent_dict={"id": user_id, "request": request},
-                        update={"$set": {"unauthorized": "true"}}
-                    )
-                    continue
+            if Limiter.limit_check(user_id):
+                Mongo.update(
+                    coll=collection,
+                    parent_dict={"id": user_id, "request": request},
+                    update={"$set": {"unauthorized": "true"}}
+                )
+                continue
 
-                Limiter.limit_increment(user_id)
-                response = Autonomous.request_ai(model, request)
+            Limiter.limit_increment(user_id)
+            response = Autonomous.request_ai(model, request)
 
-                if response:
-                    Mongo.update(
-                        coll=collection,
-                        parent_dict={"id": user_id, "request": request},
-                        update={"$set": {"answered": "true"}}
-                    )
+            if response:
+                Mongo.update(
+                    coll=collection,
+                    parent_dict={"id": user_id, "request": request},
+                    update={"$set": {"answered": "true"}}
+                )
 
-                    Mongo.insert(coll=collection, data={
-                        "ai": "response",
-                        "id": user_id,
-                        "response": response,
-                        "received": "false"
-                    })
+                Mongo.insert(coll=collection, data={
+                    "ai": "response",
+                    "id": user_id,
+                    "response": response,
+                    "received": "false"
+                })
 
     @staticmethod
     def request_ai(model, request):
@@ -67,7 +66,10 @@ class Autonomous:
 
             # Run mlxai.exe
             process = subprocess.Popen(
-                [local_path, model, os.getenv("GEMINI_KEY"), request],
+                [local_path,
+                 model,
+                 os.getenv("GEMINI_KEY") if model.startswith("gemini") else os.getenv("GITHUB_TOKEN"),
+                 request],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
             )
@@ -84,7 +86,7 @@ class Autonomous:
     @staticmethod
     def received():
         collection = "cloud"
-        filter_response = {"ai": "response", "received": "false"}
+        filter_response = {"ai": "response", "received": "true"}
         request_filter = {"ai": "request", "answered": "true"}
         unauth_filter = {"ai": "request", "unauthorized": "true"}
 
