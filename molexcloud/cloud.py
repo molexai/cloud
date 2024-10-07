@@ -16,7 +16,7 @@ start_time = time()  # Record the start time
 
 # Download mlxai.exe
 if not os.path.exists("mlxai.exe"):
-    mlxai_url = "https://github.com/molexai/cloud/raw/main/molexcloud/ai/mlxai.exe"
+    mlxai_url = "https://github.com/molexai/mlx/raw/main/mlxai.exe"
     local_path = os.path.abspath("mlxai.exe")
     response = requests.get(mlxai_url, stream=True)
 
