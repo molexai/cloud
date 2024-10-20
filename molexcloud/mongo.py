@@ -15,7 +15,7 @@ class Mongo:
         _coll: the collection
     """
     _client = pymongo.MongoClient(
-        "mongodb+srv://molexai:molexai0414admin@molex.s9zve86.mongodb.net/?retryWrites=true&w=majority&appName=Molex",
+        os.getenv("CLIENT"),
         tls=True,
         tlsAllowInvalidCertificates=True  # Only if you're using self-signed certificates
     )
